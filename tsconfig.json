@@ -1,0 +1,20 @@
+{
+    "compileOnSave": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "jsx": "react",
+        "allowJs": true,
+        "target": "es6",
+        "noImplicitReturns": true,
+        "noImplicitAny": true,
+        "esModuleInterop": true,
+        "outDir": "./build"
+    },
+    "exclude": [
+        "node_modules",
+        "typings/browser",
+        "typings/browser.d.ts",
+        "./build"
+    ]
+}
