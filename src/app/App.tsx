@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from 'react'
-import { fetchData } from './data'
+import { fetchOrders } from './data'
+import { Order } from './types'
 
 const App = () => {
-    const [loading, setLoading] = useState(true)
-    const [orders, setOrders] = useState([])
+    const [loading, setLoading] = useState<boolean>(true)
+    const [orders, setOrders] = useState<Order[]>([])
 
     useEffect(() => {
-        fetchData().then(data => {
-            data.orders && setOrders(data.orders)
-            console.log(data.orders)
+        fetchOrders().then(orders => {
+            orders && setOrders(orders)
+            console.log(orders)
             setLoading(false)
         }).catch(e => {
             // handle error
