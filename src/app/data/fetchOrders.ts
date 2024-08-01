@@ -16,16 +16,20 @@ const filterOrders = (data: any): Order[] => {
     const validOrders: Order[] = []
 
     data.forEach((order: any) => {
+        // Filter out invalid orders
         if (order.table_name && order.products && order.products.length > 0) {
             const products: OrderLine[] = []
             order.products.forEach((product: any) => {
                 if (product.name && product.quantity) {
                     products.push({
                         product_name: product.name,
-                        quantity: product.quantity
+                        quantity: product.quantity,
+                        options: product.options && product.options.filter((option: string | undefined | null) => option !== null ).length > 0 ? product.options.sort() : undefined,
+                        remark: product.remark
                     })
                 }
             })
+            // Add valid orders
             products.length > 0 && validOrders.push({
                 table_name: order.table_name,
                 order_lines: products

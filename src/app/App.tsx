@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { fetchOrders } from './data'
 import { Order } from './types'
+import { TableList } from './components'
 
 const App = () => {
     const [loading, setLoading] = useState<boolean>(true)
@@ -9,7 +10,6 @@ const App = () => {
     useEffect(() => {
         fetchOrders().then(orders => {
             orders && setOrders(orders)
-            console.log(orders)
             setLoading(false)
         }).catch(e => {
             // handle error
@@ -18,8 +18,10 @@ const App = () => {
         })
     }, [])
 
-    return (
-        <h1>{loading ? "Loading..." : "Hello Smartendr!"}</h1>
+    return (loading ? 
+        (<h1>Loading...</h1>)
+    :
+        <TableList orders={orders} />
     )
 }
 

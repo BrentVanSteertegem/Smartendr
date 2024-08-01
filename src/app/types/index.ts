@@ -6,4 +6,6 @@ export type Order = {
 export type OrderLine = {
     product_name: string,
     quantity: number,
+    options?: string[],
+    remark?: string
 }
