@@ -14,7 +14,13 @@ type Column = {
 }
 
 export const TableList = ({ orders }: TablesProps) => {
+    const [tables, setTables] = useState<Order[]>()
     const [columns, setColumns] = useState<Column[]>()
+
+    // Update the columns when the window is resized
+    useEffect(() => {
+        window.addEventListener('resize', updateColumns)
+    }, [])
 
     useEffect(() => {
         // Get unique table names
@@ -28,8 +34,8 @@ export const TableList = ({ orders }: TablesProps) => {
                 order_lines: order.order_lines
             }
         })
-        
-        const tables: Order[] = []
+      
+        const completeTables: Order[] = []
         uniqueTableNames.forEach(name => {
             // Group lines by table
             const orderLines: OrderLine[] = tableLines.filter(table => table.table_name === name).map(table => table.order_lines).flat()
@@ -53,29 +59,33 @@ export const TableList = ({ orders }: TablesProps) => {
                 // Add new order line if product name, options or remark are different
                 !found && summarizedOrderLines.push(orderLine)
             })
-
+  
             // Add summarized order lines to table
-            tables.push({ table_name: name, order_lines: summarizedOrderLines.sort((a, b) => {
+            completeTables.push({ table_name: name, order_lines: summarizedOrderLines.sort((a, b) => {
                 if (a.product_name < b.product_name) {
                     return -1;
-                  }
-                  if (a.product_name > b.product_name) {
+                }
+                if (a.product_name > b.product_name) {
                     return 1;
-                  }
-                  return 0;
+                }
+                return 0;
             }) })
         })
 
-        tables.sort((a, b) => {
+        setTables(completeTables.sort((a, b) => {
             if (a.table_name < b.table_name) {
                 return -1;
-              }
-              if (a.table_name > b.table_name) {
+            }
+            if (a.table_name > b.table_name) {
                 return 1;
-              }
-              return 0;
-        })
+            }
+            return 0;
+        }))
 
+        tables && updateColumns()
+    }, [orders])
+
+    const updateColumns = () => {
         //  Since we the height of the Table components is dependant on their content, we can't limit their height
         // Therefore we can't use css grid to predefine the areas of the tables
         // We can however count the amount of lines to determine the height of each table and create a grid by combining flexboxes
@@ -124,7 +134,7 @@ export const TableList = ({ orders }: TablesProps) => {
         })
 
         setColumns(tempColumns)
-    }, [orders])
+    }
 
     return (
         <StTableList>
