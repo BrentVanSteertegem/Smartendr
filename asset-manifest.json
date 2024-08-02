@@ -1,0 +1,13 @@
+{
+  "files": {
+    "main.css": "/Smartendr/static/css/main.4e56f080.css",
+    "main.js": "/Smartendr/static/js/main.38444699.js",
+    "index.html": "/Smartendr/index.html",
+    "main.4e56f080.css.map": "/Smartendr/static/css/main.4e56f080.css.map",
+    "main.38444699.js.map": "/Smartendr/static/js/main.38444699.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4e56f080.css",
+    "static/js/main.38444699.js"
+  ]
+}
