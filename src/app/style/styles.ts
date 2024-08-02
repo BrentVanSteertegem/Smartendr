@@ -21,11 +21,18 @@ const TextColors = {
 }
   
 const Sizes = {
+    small: '0.25rem',
     medium: '1rem',
     tableItem: '26rem',
 }
+
+const FontSizes = {
+    medium: '1rem',
+    large: '1.2rem',
+}
   
 const Padding = {
+    small: Sizes.small,
     medium: Sizes.medium
 }
   
@@ -34,5 +41,6 @@ export const Variables = {
     colors: Colors,
     textColors: TextColors,
     sizes: Sizes,
+    fontSizes: FontSizes,
     padding: Padding
 }
