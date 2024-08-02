@@ -4,17 +4,12 @@ import { Order } from '../../types'
 import { StStable, StTableItem, StTableItemQuantity, StTableItems, StTableHeader, StTimeIndicator } from './Table.styled'
 
 type TableProps = {
-    table: Order,
-    mockTable?: boolean
+    table: Order
 }
 
-export type StTableProps = {
-    mockTable: boolean
-}
-
-export const Table = ({ table, mockTable }: TableProps) => {
+export const Table = ({ table }: TableProps) => {
     return (
-        <StStable mockTable={mockTable || false}>
+        <StStable>
             <StTableHeader>
                 <section>
                     <FontAwesomeIcon icon={faUserGroup}/>

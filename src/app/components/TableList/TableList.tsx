@@ -1,14 +1,20 @@
-import { ReactNode, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Order, OrderLine } from '../../types'
 import { Table } from '../Table/Table'
 import { StTableList } from './TableList.styled'
+import { Variables } from '../../style/styles'
 
 type TablesProps = {
     orders: Order[]
 }
 
+type Column = {
+    tables: Order[],
+    height: number
+}
+
 export const TableList = ({ orders }: TablesProps) => {
-    const [tables, setTables] = useState<Order[]>([])
+    const [columns, setColumns] = useState<Column[]>()
 
     useEffect(() => {
         // Get unique table names
@@ -23,7 +29,7 @@ export const TableList = ({ orders }: TablesProps) => {
             }
         })
         
-        const completeTables: Order[] = []
+        const tables: Order[] = []
         uniqueTableNames.forEach(name => {
             // Group lines by table
             const orderLines: OrderLine[] = tableLines.filter(table => table.table_name === name).map(table => table.order_lines).flat()
@@ -49,7 +55,7 @@ export const TableList = ({ orders }: TablesProps) => {
             })
 
             // Add summarized order lines to table
-            completeTables.push({ table_name: name, order_lines: summarizedOrderLines.sort((a, b) => {
+            tables.push({ table_name: name, order_lines: summarizedOrderLines.sort((a, b) => {
                 if (a.product_name < b.product_name) {
                     return -1;
                   }
@@ -59,8 +65,8 @@ export const TableList = ({ orders }: TablesProps) => {
                   return 0;
             }) })
         })
-        
-        setTables(completeTables.sort((a, b) => {
+
+        tables.sort((a, b) => {
             if (a.table_name < b.table_name) {
                 return -1;
               }
@@ -68,33 +74,67 @@ export const TableList = ({ orders }: TablesProps) => {
                 return 1;
               }
               return 0;
-        }))
+        })
+
+        //  Since we the height of the Table components is dependant on their content, we can't limit their height
+        // Therefore we can't use css grid to predefine the areas of the tables
+        // We can however count the amount of lines to determine the height of each table and create a grid by combining flexboxes
+
+        // Determine the screen width, in rem
+        const screenWidth: number = window.innerWidth / 16
+        // Determine the amount of columns that can be displayed
+        let columnsAmount: number = Math.floor((screenWidth - Variables.numericPadding.medium) / (Variables.numericSizes.tableItem +  Variables.numericPadding.medium))
+        // Make sure there's at least 1 column
+        if (columnsAmount < 1) columnsAmount = 1
+        const tempColumns: Column[] = []
+        
+        tables.forEach(table => {
+            // Determine height of table
+            // Height of the header
+            let height = Variables.numericLineHeights.medium + 2 * Variables.numericPadding.small
+            // Padding around the order lines
+            height += 2 * Variables.numericPadding.medium
+            // Height of the order lines
+            table.order_lines.forEach(orderLine => {
+                height += Variables.numericLineHeights.large
+                if (orderLine.options) {
+                    height += orderLine.options.length * Variables.numericLineHeights.large + Variables.numericPadding.small
+                }
+                if (orderLine.remark) {
+                    height += Variables.numericLineHeights.large + Variables.numericPadding.small
+                }
+            })
+            // Height of the time indicator
+            height += Variables.numericLineHeights.large + 2 * Variables.numericPadding.small
+
+            // Check if there is room for a new column
+            if (tempColumns.length < columnsAmount) {
+                tempColumns.push({ tables: [table], height: height })
+            } else {
+                // Check to see which column is the shortest
+                let shortestColumnIndex = 0
+                for (let i = 1; i < columnsAmount; i++) {
+                    if (tempColumns[i].height < tempColumns[shortestColumnIndex].height) {
+                        shortestColumnIndex = i
+                    }
+                }
+                tempColumns[shortestColumnIndex].tables.push(table)
+                tempColumns[shortestColumnIndex].height += height + Variables.numericPadding.medium
+            }    
+        })
+
+        setColumns(tempColumns)
     }, [orders])
 
-    // Generate mock tables to space the bottom row correctly
-    const mockTable: Order = {
-        table_name: 'Mock Table',
-        order_lines: []
-    }
-
-    const amountOfMockTables = 7
-
-    const generateMockTables = () => {
-        const mockTables: ReactNode[] = []
-        for(let i = 0; i < amountOfMockTables; i++) {
-            mockTables.push(<Table table={mockTable} mockTable={true}/>)
-        }
-        return mockTables
-    }
-
     return (
-        <div>
-            <StTableList>
-                {tables.map((table) => (
-                    <Table key={table.table_name} table={table} />
-                ))}
-                {generateMockTables()}
-            </StTableList>
-        </div>
+        <StTableList>
+            {columns && columns.map((column, index) => (
+                <section key={index}>
+                    {column.tables.map((table, index) => (
+                        <Table key={index} table={table} />
+                    ))}
+                </section>
+            ))}
+        </StTableList>
     )
 }
