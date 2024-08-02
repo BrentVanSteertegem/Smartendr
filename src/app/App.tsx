@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { fetchOrders } from './data'
 import { Order } from './types'
-import { TableList } from './components'
+import { Container, TableList } from './components'
 
 const App = () => {
     const [loading, setLoading] = useState<boolean>(true)
@@ -18,10 +18,14 @@ const App = () => {
         })
     }, [])
 
-    return (loading ? 
-        (<h1>Loading...</h1>)
-    :
-        <TableList orders={orders} />
+    return (
+        <Container>
+            {loading ? 
+                (<h1>Loading...</h1>)
+            :
+                <TableList orders={orders} />
+            }
+        </Container>
     )
 }
 
