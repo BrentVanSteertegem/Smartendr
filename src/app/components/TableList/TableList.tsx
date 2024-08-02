@@ -1,4 +1,5 @@
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
+import { LoadingContext } from '../../App'
 import { Order, OrderLine } from '../../types'
 import { Table } from '../Table/Table'
 import { StTableList } from './TableList.styled'
@@ -14,8 +15,12 @@ type Column = {
 }
 
 export const TableList = ({ orders }: TablesProps) => {
-    const [tables, setTables] = useState<Order[]>()
+    // Import the loading state from the App component
+    const { loading, setLoading } = useContext(LoadingContext)
+
+    let tables: Order[] = []
     const [columns, setColumns] = useState<Column[]>()
+    let amountOfColumns: number = 0
 
     // Update the columns when the window is resized
     useEffect(() => {
@@ -23,6 +28,7 @@ export const TableList = ({ orders }: TablesProps) => {
     }, [])
 
     useEffect(() => {
+        setLoading(true)
         // Get unique table names
         const tableNames: string[] = orders.map(order => order.table_name);
         const uniqueTableNames: string[] = [...new Set(tableNames)]
@@ -72,7 +78,7 @@ export const TableList = ({ orders }: TablesProps) => {
             }) })
         })
 
-        setTables(completeTables.sort((a, b) => {
+        tables = completeTables.sort((a, b) => {
             if (a.table_name < b.table_name) {
                 return -1;
             }
@@ -80,25 +86,28 @@ export const TableList = ({ orders }: TablesProps) => {
                 return 1;
             }
             return 0;
-        }))
+        })
 
-        tables && updateColumns()
+        completeTables && updateColumns()
+        setLoading(false)
     }, [orders])
 
+    //  Since we the height of the Table components is dependant on their content, we can't limit their height
+    // Therefore we can't use css grid to predefine the areas of the tables
+    // We can however count the amount of lines to determine the height of each table and create a grid by combining flexboxes
     const updateColumns = () => {
-        //  Since we the height of the Table components is dependant on their content, we can't limit their height
-        // Therefore we can't use css grid to predefine the areas of the tables
-        // We can however count the amount of lines to determine the height of each table and create a grid by combining flexboxes
-
         // Determine the screen width, in rem
         const screenWidth: number = window.innerWidth / 16
         // Determine the amount of columns that can be displayed
         let columnsAmount: number = Math.floor((screenWidth - Variables.numericPadding.medium) / (Variables.numericSizes.tableItem +  Variables.numericPadding.medium))
         // Make sure there's at least 1 column
         if (columnsAmount < 1) columnsAmount = 1
+        // Don't update the columns if the amount of columns hasn't changed
+        if (columnsAmount === amountOfColumns) return
+
+        amountOfColumns = columnsAmount
         const tempColumns: Column[] = []
-        
-        tables.forEach(table => {
+        tables && tables.forEach(table => {
             // Determine height of table
             // Height of the header
             let height = Variables.numericLineHeights.medium + 2 * Variables.numericPadding.small

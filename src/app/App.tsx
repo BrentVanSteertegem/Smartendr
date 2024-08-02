@@ -1,7 +1,9 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, createContext, Dispatch, SetStateAction } from 'react'
 import { fetchOrders } from './data'
 import { Order } from './types'
-import { Container, TableList } from './components'
+import { Container, Loading, TableList } from './components'
+
+export const LoadingContext = createContext<{loading: boolean, setLoading: Dispatch<SetStateAction<boolean>>}>({loading: true, setLoading: (loading: boolean) => {}})
 
 const App = () => {
     const [loading, setLoading] = useState<boolean>(true)
@@ -18,14 +20,17 @@ const App = () => {
         })
     }, [])
 
+
     return (
-        <Container>
-            {loading ? 
-                (<h1>Loading...</h1>)
-            :
-                <TableList orders={orders} />
-            }
-        </Container>
+        <LoadingContext.Provider value={{ loading, setLoading }}>
+                <Container>
+                    {loading ? 
+                        (<Loading />)
+                    :
+                        <TableList orders={orders} />
+                    }
+                </Container>
+        </LoadingContext.Provider>
     )
 }
 
