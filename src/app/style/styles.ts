@@ -1,11 +1,17 @@
 const Breakpoints = {
-    tablet: '36rem'
+    tablet: '46rem',
+    desktop: '80rem',
 }
   
 const Colors = {
     neutrals: {
-        white: '#FFF',
+        white: '#fff',
         black: '#000',
+    },
+    tableItem: {
+        background: '#fefefe',
+        name: '#dfe0e7',
+        timer: '#a7f19b'
     }
 }
   
@@ -16,14 +22,11 @@ const TextColors = {
   
 const Sizes = {
     medium: '1rem',
+    tableItem: '26rem',
 }
   
 const Padding = {
     medium: Sizes.medium
-}
-  
-const DefaultStyles = {
-    padding: Padding.medium,
 }
   
 export const Variables = {
@@ -31,6 +34,5 @@ export const Variables = {
     colors: Colors,
     textColors: TextColors,
     sizes: Sizes,
-    padding: Padding,
-    defaultStyles: DefaultStyles
+    padding: Padding
 }

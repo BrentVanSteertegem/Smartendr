@@ -1,5 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { ReactNode, useEffect, useState } from 'react'
 import { Order, OrderLine } from '../../types'
+import { Table } from '../Table/Table'
+import { StTableList } from './TableList.styled'
 
 type TablesProps = {
     orders: Order[]
@@ -69,27 +71,30 @@ export const TableList = ({ orders }: TablesProps) => {
         }))
     }, [orders])
 
+    // Generate mock tables to space the bottom row correctly
+    const mockTable: Order = {
+        table_name: 'Mock Table',
+        order_lines: []
+    }
+
+    const amountOfMockTables = 7
+
+    const generateMockTables = () => {
+        const mockTables: ReactNode[] = []
+        for(let i = 0; i < amountOfMockTables; i++) {
+            mockTables.push(<Table table={mockTable} mockTable={true}/>)
+        }
+        return mockTables
+    }
+
     return (
         <div>
-            <h1>Tables</h1>
-            {tables.map((table, index) => (
-                <div key={index}>
-                    <h2>{table.table_name}</h2>
-                    <ul>
-                        {table.order_lines.map((orderLine, index) => (
-                            <li key={index}>
-                                {orderLine.quantity} - {orderLine.product_name}
-                                {orderLine.options && <ul>
-                                    {orderLine.options.map((option, index) => (
-                                        <li key={index}>{option}</li>
-                                    ))}
-                                </ul>}
-                                {orderLine.remark && <p>{orderLine.remark}</p>}
-                            </li>
-                        ))}
-                    </ul>
-                </div>
-            ))}
+            <StTableList>
+                {tables.map((table) => (
+                    <Table key={table.table_name} table={table} />
+                ))}
+                {generateMockTables()}
+            </StTableList>
         </div>
     )
 }
