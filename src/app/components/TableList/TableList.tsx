@@ -16,7 +16,7 @@ type Column = {
 
 export const TableList = ({ orders }: TablesProps) => {
     // Import the loading state from the App component
-    const { loading, setLoading } = useContext(LoadingContext)
+    const { setLoading } = useContext(LoadingContext)
 
     let tables: Order[] = []
     const [columns, setColumns] = useState<Column[]>()

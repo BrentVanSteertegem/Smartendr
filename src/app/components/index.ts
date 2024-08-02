@@ -1,4 +1,5 @@
 export * from './Container'
+export * from './LinkToGithub'
 export * from './Loading'
 export * from './Table'
 export * from './TableList'

@@ -23,12 +23,14 @@ const TextColors = {
 const NumericSizes = {
     small: 0.25,
     medium: 1,
+    icon: 1.5,
     tableItem: 26,
 }
 
 const Sizes = {
     small: `${NumericSizes.small}rem`,
     medium: `${NumericSizes.medium}rem`,
+    icon: `${NumericSizes.icon}rem`,
     tableItem: `${NumericSizes.tableItem}rem`,
 }
 
