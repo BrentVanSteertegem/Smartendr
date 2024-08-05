@@ -8,6 +8,6 @@ export const StTableList = styled.section`
 
     & > section {
         flex-direction: column;
-        gap: ${Variables.padding.medium};
+        gap: ${Variables.padding.small};
     }
 `

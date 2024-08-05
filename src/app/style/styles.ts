@@ -21,13 +21,15 @@ const TextColors = {
 }
   
 const NumericSizes = {
-    small: 0.25,
+    xsmall: 0.25,
+    small: 0.5,
     medium: 1,
     icon: 1.5,
     tableItem: 26,
 }
 
 const Sizes = {
+    xsmall: `${NumericSizes.xsmall}rem`,
     small: `${NumericSizes.small}rem`,
     medium: `${NumericSizes.medium}rem`,
     icon: `${NumericSizes.icon}rem`,
@@ -55,13 +57,23 @@ const LineHeights = {
 }
 
 const NumericPadding = {
+    xsmall: NumericSizes.xsmall,
     small: NumericSizes.small,
     medium: NumericSizes.medium,
 }
   
 const Padding = {
+    xsmall: `${NumericPadding.xsmall}rem`,
     small: `${NumericPadding.small}rem`,
     medium: `${NumericPadding.medium}rem`,
+}
+
+const NumericRounding = {
+    xsmall: NumericSizes.xsmall,
+}
+
+const Rounding = {
+    xsmall: `${NumericRounding.xsmall}rem`,
 }
   
 export const Variables = {
@@ -76,4 +88,6 @@ export const Variables = {
     lineHeights: LineHeights,
     numericPadding: NumericPadding,
     padding: Padding,
+    numericRounding: NumericRounding,
+    rounding: Rounding,
 }

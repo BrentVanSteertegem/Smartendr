@@ -7,6 +7,8 @@ export const StStable = styled.div`
     height: fit-content;
     font-size: ${Variables.fontSizes.medium};
     line-height: ${Variables.lineHeights.medium};
+    border-radius: ${Variables.rounding.xsmall};
+    overflow: hidden;
     
     @media (min-width: calc(${Variables.sizes.tableItem} + 2 * ${Variables.padding.medium})) {
         width: ${Variables.sizes.tableItem};
@@ -16,13 +18,13 @@ export const StStable = styled.div`
 export const StTableHeader = styled.section`
     background-color: ${Variables.colors.tableItem.name};
     font-weight: bold;
-    padding: ${Variables.padding.small} ${Variables.padding.medium};
+    padding: ${Variables.padding.xsmall} ${Variables.padding.medium};
     gap: ${Variables.padding.medium};
     align-items: center;
 
     section {
         display: flex;
-        gap: ${Variables.padding.small};
+        gap: ${Variables.padding.xsmall};
     }
 
     & > p {
@@ -36,13 +38,13 @@ export const StTableItems = styled.ul`
     padding: ${Variables.padding.medium};
     display: flex;
     flex-direction: column;
-    gap: ${Variables.padding.small};
+    gap: ${Variables.padding.xsmall};
 
     ul {
-        padding-top: ${Variables.padding.small};
+        padding-top: ${Variables.padding.xsmall};
         display: flex;
         flex-direction: column;
-        gap: ${Variables.padding.small};
+        gap: ${Variables.padding.xsmall};
     }
 `
 
@@ -75,6 +77,6 @@ export const StTimeIndicator = styled.p`
     background-color: ${Variables.colors.tableItem.timer};
     width: calc(100% - 2 * ${Variables.padding.medium});
     height: calc(1.1 * ${Variables.fontSizes.large});
-    padding: ${Variables.padding.small} ${Variables.padding.medium};
+    padding: ${Variables.padding.xsmall} ${Variables.padding.medium};
     text-align: end;
 `

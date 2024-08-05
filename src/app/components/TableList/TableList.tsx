@@ -110,21 +110,21 @@ export const TableList = ({ orders }: TablesProps) => {
         tables && tables.forEach(table => {
             // Determine height of table
             // Height of the header
-            let height = Variables.numericLineHeights.medium + 2 * Variables.numericPadding.small
+            let height = Variables.numericLineHeights.medium + 2 * Variables.numericPadding.xsmall
             // Padding around the order lines
             height += 2 * Variables.numericPadding.medium
             // Height of the order lines
             table.order_lines.forEach(orderLine => {
                 height += Variables.numericLineHeights.large
                 if (orderLine.options) {
-                    height += orderLine.options.length * Variables.numericLineHeights.large + Variables.numericPadding.small
+                    height += orderLine.options.length * Variables.numericLineHeights.large + Variables.numericPadding.xsmall
                 }
                 if (orderLine.remark) {
-                    height += Variables.numericLineHeights.large + Variables.numericPadding.small
+                    height += Variables.numericLineHeights.large + Variables.numericPadding.xsmall
                 }
             })
             // Height of the time indicator
-            height += Variables.numericLineHeights.large + 2 * Variables.numericPadding.small
+            height += Variables.numericLineHeights.large + 2 * Variables.numericPadding.xsmall
 
             // Check if there is room for a new column
             if (tempColumns.length < columnsAmount) {
